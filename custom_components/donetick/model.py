@@ -3,6 +3,7 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional, List
+from homeassistant.util import dt as dt_util
 from homeassistant.components.todo import (
     TodoItem,
     TodoItemStatus,
@@ -84,7 +85,7 @@ class DonetickTask:
         return cls(
             id=data["id"],
             name=data["name"],
-            next_due_date=datetime.fromisoformat(data["nextDueDate"].replace('Z', '+00:00')) if data.get("nextDueDate") else None,
+            next_due_date=dt_util.as_local(datetime.fromisoformat(data["nextDueDate"].replace('Z', '+00:00'))) if data.get("nextDueDate") else None,
             status=data["status"],
             priority=data["priority"],
             labels=data["labels"],
